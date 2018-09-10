@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Custom Resource
+
+Globals:
+  Function:
+    Timeout: 20
+
+Resources:
+
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/custom-resource-1.0.jar
+      Handler: org.saabye_pedersen.cfn.CustomResourceFunctionHandler::handleRequest
+      Runtime: java8
+
+  LambdaRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "states.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      Path: "/"
+
+  LambdaRolePolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "createBucket"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - "Effect": "Allow"
+          "Action":
+            - "s3:CreateBucket"
+            - "s3:PutBucketPolicy"
+            - "s3:PutBucketWebsite"
+          "Resource": "*"
+        - Effect: Allow
+          Action:
+          - "logs:CreateLogGroup"
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+          Resource: arn:aws:logs:*:*:*
+      Roles:
+        - Ref: "LambdaRole"
+
+  CfnCustomResource:
+    Type: "Custom::MyCustomResource"
+    Version: "1.0"
+    Properties:
+      ServiceToken: !GetAtt LambdaFunction.Arn
