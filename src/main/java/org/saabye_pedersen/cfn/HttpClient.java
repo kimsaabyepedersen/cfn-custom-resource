@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpClient {
+
     void put(String output, String responseURL) {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(responseURL).openConnection();
@@ -14,7 +15,7 @@ class HttpClient {
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
             out.write(output);
             out.close();
-            System.out.println("Status Code:" + connection.getResponseCode());
+            System.out.println("Status Code: " + connection.getResponseCode());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

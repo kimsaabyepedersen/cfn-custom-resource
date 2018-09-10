@@ -2,8 +2,6 @@ package org.saabye_pedersen.cfn;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,22 +27,12 @@ public class CustomResourceFunctionHandler implements RequestStreamHandler {
                 break;
         }
 
-        String output = getResponseAsString(CfnResponse.fromCfnRequest(cfnRequest, "Demo ARN"));
+        String output = JacksonHelper.mapToString(CfnResponse.fromCfnRequest(cfnRequest, "Demo ARN"));
 
         System.out.println("Writing to bucket:" + cfnRequest.getResponseURL());
         System.out.println(output);
 
         new HttpClient().put(output, cfnRequest.getResponseURL());
     }
-
-    private String getResponseAsString(CfnResponse cfnResponse) {
-        try {
-            return new ObjectMapper().writeValueAsString(cfnResponse);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
 
 }

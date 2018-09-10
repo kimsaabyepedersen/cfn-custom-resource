@@ -19,7 +19,7 @@ class JacksonHelper {
         }
     }
 
-    static String mapToString(CfnRequest cfnRequest) {
+    static <T> String mapToString(T cfnRequest) {
         try {
             return MAPPER.writeValueAsString(cfnRequest);
         } catch (JsonProcessingException e) {
