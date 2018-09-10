@@ -1,4 +1,4 @@
-# AWS CloudFormation 
+# AWS CloudFormation Custom Resource
 Demo of CloudFormation [Custom Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html).
 
 The code does not create an actual resource, but it responds to CloudFormation as though it had.

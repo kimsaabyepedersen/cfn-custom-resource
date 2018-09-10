@@ -33,16 +33,10 @@ Resources:
   LambdaRolePolicy:
     Type: "AWS::IAM::Policy"
     Properties:
-      PolicyName: "createBucket"
+      PolicyName: "customResourcePolicy"
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
-        - "Effect": "Allow"
-          "Action":
-            - "s3:CreateBucket"
-            - "s3:PutBucketPolicy"
-            - "s3:PutBucketWebsite"
-          "Resource": "*"
         - Effect: Allow
           Action:
           - "logs:CreateLogGroup"
